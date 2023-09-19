@@ -1,14 +1,13 @@
-#!/usr/bin/node
-function welcome(firstName, lastName) {
-    var fullName = firstName + ' ' + lastName;
-  
-    function displayFullName() {
-      alert('Welcome ' + fullName + '!');
+alert(globalVariable);
+  let course = "Holberton";
+  function inner() {
+    alert(globalVariable + " " + course);
+    let exclamation = "!";
+    function inception() {
+      alert(globalVariable + " " + course + " " + exclamation);
     }
-  
-    displayFullName();
+    inception();
+    inner();
   }
-  
-  // Testing the function
-  welcome('Holberton', 'School');
-  
+
+outer();
