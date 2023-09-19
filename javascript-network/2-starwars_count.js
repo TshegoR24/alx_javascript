@@ -1,18 +1,16 @@
 #!/usr/bin/node
 const request = require('request');
-// Get the API URL from the first argument
-const apiUrl = process.argv[2];
-// Make a request to the Star Wars API
-request(apiUrl, function (error, response, body) {
-  // Check for errors
+const url = process.argv[2];
+const id = 18;
+request.get(url, (error, response, body) => {
   if (error) {
-    console.error(error);
-    return;
+    console.error('Error:', error);
   }
-  // Parse the response body as JSON
-  const movies = JSON.parse(body);
-  // Filter the movies by the character ID
-  const wedgeAntillesMovies = movies.filter(movie => movie.characters.includes('https://swapi-api.alx-tools.com/api/people/18/'));
-  // Print the number of movies
-  console.log(wedgeAntillesMovies.length);
+  const data = JSON.parse(body);
+  const includeWedge = data.results.filter((movie) => {
+    return movie.characters.some((characterUrl) =>
+      characterUrl.includes('/' + id + '/')
+    );
+  });
+  console.log(includeWedge.length);
 });
