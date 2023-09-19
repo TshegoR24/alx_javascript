@@ -1,52 +1,27 @@
 #!/usr/bin/node
 const request = require('request');
-
-const apiUrl = 'https://jsonplaceholder.typicode.com/todos';
-
-// Function to fetch data from the API
-function fetchData(url) {
-  return new Promise((resolve, reject) => {
-    request(url, (error, response, body) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(JSON.parse(body));
-      }
-    });
-  });
-}
-
-// Function to count completed tasks by user ID
-function countCompletedTasks(data) {
-  const completedTasksByUser = {};
-
-  for (const task of data) {
-    if (task.completed) {
-      if (completedTasksByUser[task.userId]) {
-        completedTasksByUser[task.userId]++;
-      } else {
-        completedTasksByUser[task.userId] = 1;
-      }
-    }
+// Get the API URL from the first argument
+const apiUrl = process.argv[2];
+// Make a request to the API
+request(apiUrl, function (error, response, body) {
+  // Check for errors
+  if (error) {
+    console.error(error);
+    return;
   }
-
-  return completedTasksByUser;
-}
-
-// Main function to fetch data and count completed tasks
-async function main() {
-  try {
-    const data = await fetchData(apiUrl);
-    const completedTasksByUser = countCompletedTasks(data);
-
-    // Print users with completed tasks
-    for (const userId in completedTasksByUser) {
-      console.log(`User ID ${userId}: ${completedTasksByUser[userId]} completed tasks`);
-    }
-  } catch (error) {
-    console.error('Error fetching data:', error);
+  // Parse the response body as JSON
+  const todos = JSON.parse(body);
+  // Get the user IDs of the completed tasks
+  const completedTaskUserIds = todos
+    .filter(todo => todo.completed)
+    .map(todo => todo.userId);
+  // Count the number of tasks completed by each user
+  const taskCountsByUserId = completedTaskUserIds.reduce((counts, userId) => {
+    counts[userId] = (counts[userId] || 0) + 1;
+    return counts;
+  }, {});
+  // Print the users with completed tasks
+  for (const userId in taskCountsByUserId) {
+    console.log(`${userId}: ${taskCountsByUserId[userId]}`);
   }
-}
-
-// Run the main function
-main();
+});
