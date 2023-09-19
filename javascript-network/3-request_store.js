@@ -1,30 +1,25 @@
 #!/usr/bin/node
 const request = require('request');
 const fs = require('fs');
-const iconv = require('iconv-lite'); // For UTF-8 encoding
-
-// Check if the required arguments are provided
-if (process.argv.length !== 4) {
-  console.log('Usage: node fetchAndSave.js <URL> <file-path>');
-  process.exit(1);
-}
-
-// Extract URL and file path from command line arguments
+// Get the URL from the first argument
 const url = process.argv[2];
+// Get the file path from the second argument
 const filePath = process.argv[3];
-
-// Make an HTTP GET request to the URL
-request({ url, encoding: null }, (error, response, body) => {
+// Make a request to the URL
+request(url, function (error, response, body) {
+  // Check for errors
   if (error) {
-    console.error('Error:', error);
-  } else if (response.statusCode !== 200) {
-    console.error('HTTP Error:', response.statusCode);
-  } else {
-    // Convert the response body to UTF-8 encoding
-    const utf8Body = iconv.decode(body, 'utf-8');
-
-    // Save the response body to the specified file
-    fs.writeFileSync(filePath, utf8Body, 'utf-8');
-    console.log(`Contents of ${url} saved to ${filePath}`);
+    console.error(error);
+    return;
   }
+  // Save the response body to a file
+  fs.writeFile(filePath, body, 'utf-8', function (error) {
+    // Check for errors
+    if (error) {
+      console.error(error);
+      return;
+    }
+    // Log a success message
+    console.log('The file was saved successfully.');
+  });
 });
