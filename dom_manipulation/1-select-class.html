@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector Demo</title>
+</head>
+<body>
+    <h1>Welcome to Selector Demo</h1>
+    <p>This is a demonstration of selecting HTML elements using JavaScript.</p>
+    <ul>
+        <li id="item1">Item 1</li>
+        <li id="item2">Item 2</li>
+        <li id="item3">Item 3</li>
+    </ul>
+    <button id="changeTextButton">Change Text</button>
+
+    <p class="highlight">This is a highlighted paragraph. Click the button to make it bold.</p>
+
+    <script>
+        // Select specific elements by their IDs
+        const item1Element = document.getElementById('item1');
+        const item2Element = document.getElementById('item2');
+        const item3Element = document.getElementById('item3');
+
+        // Select elements by tag name
+        const paragraphs = document.getElementsByTagName('p');
+
+        // Select elements by class name
+        const buttons = document.getElementsByClassName('button');
+
+        // Select elements using querySelector
+        const changeTextButton = document.querySelector('#changeTextButton');
+
+        // Select elements by class using querySelectorAll
+        const highlightedParagraphs = document.querySelectorAll('.highlight');
+
+        // Change the text of selected elements
+        item1Element.textContent = 'New Text for Item 1';
+        item2Element.textContent = 'New Text for Item 2';
+
+        // Add a click event listener to the button
+        changeTextButton.addEventListener('click', function () {
+            // Change the text of the first paragraph
+            paragraphs[0].textContent = 'Text changed by clicking the button';
+
+            // Modify the format of the highlighted paragraph to make it bold
+            highlightedParagraphs.forEach(paragraph => {
+                paragraph.style.fontWeight = 'bold';
+            });
+        });
+    </script>
+</body>
+</html>
