@@ -1,0 +1,22 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Modification Example</title>
+</head>
+<body>
+    <img id="myImage" src="https://via.placeholder.com/150" alt="Placeholder image">
+
+    <script>
+        // Select the <img> element using its id
+        var imgElement = document.getElementById("myImage");
+
+        // Modify the element content
+        imgElement.src = "https://picsum.photos/200/301";
+        imgElement.alt = "New image";
+        imgElement.style.border = "2px solid red";
+    </script>
+</body>
+</html>
